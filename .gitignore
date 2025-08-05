@@ -1,0 +1,16 @@
+.idea
+*.log
+temp/*
+backend/temp/*
+.DS_Store
+celerybeat-schedule.db
+backend/log/*
+.windsurf
+.cursor
+.buildpath
+.hgignore.swp
+.project
+.orig
+.swp
+.settings
+.vscode
