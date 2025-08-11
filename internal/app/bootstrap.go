@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"errors"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
@@ -21,8 +22,15 @@ import (
 
 // Start 启动服务
 func Start() {
+	// 解析命令行参数，支持通过 -config 或 -c 指定配置文件路径
+	// 示例：./app -config=/path/to/config.yaml 或 ./app -c ./configs/dev.yaml
+	var configPath string
+	flag.StringVar(&configPath, "config", "", "配置文件路径（默认：configs/config.yaml）")
+	flag.StringVar(&configPath, "c", "", "配置文件路径（默认：configs/config.yaml）")
+	flag.Parse()
+
 	// 初始化配置文件
-	config.VP = initializer.Viper()
+	config.VP = initializer.Viper(configPath)
 	if config.VP != nil {
 		fmt.Println("Viper初始化成功")
 	}
