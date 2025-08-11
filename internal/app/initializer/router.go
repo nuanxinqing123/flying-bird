@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/nuanxinqing123/flying-bird/internal/controller"
 	"github.com/nuanxinqing123/flying-bird/internal/middleware"
 	ginprometheus "github.com/zsais/go-gin-prometheus"
 )
@@ -31,8 +32,10 @@ func Routers() *gin.Engine {
 		c.String(http.StatusOK, "pong")
 	})
 
-	//ApiGroup := Router.Group("/app")
-	//router.InitRouterApp(ApiGroup)
+	// 健康检查
+	HealthyGroup := Router.Group("/")
+	HealthyCon := controller.HealthyController{}
+	HealthyCon.HealthyRouter(HealthyGroup)
 
 	return Router
 }
