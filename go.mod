@@ -7,6 +7,7 @@ require (
 	github.com/gin-contrib/cors v1.7.6
 	github.com/gin-gonic/gin v1.10.1
 	github.com/go-playground/validator/v10 v10.27.0
+	github.com/go-resty/resty/v2 v2.16.5
 	github.com/lestrrat-go/file-rotatelogs v2.4.0+incompatible
 	github.com/redis/go-redis/v9 v9.12.0
 	github.com/spf13/viper v1.20.1
