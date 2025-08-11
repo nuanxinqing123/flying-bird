@@ -1,0 +1,7 @@
+app:
+  # 运行模式【debug、release】
+  mode:        "release"
+  # 运行地址【不懂请写: 0.0.0.0】
+  address:     "127.0.0.1"
+  # 运行端口
+  port:        8090

@@ -1,0 +1,70 @@
+package app
+
+import (
+	"context"
+	"errors"
+	"fmt"
+	"log"
+	"net/http"
+	"os"
+	"os/signal"
+	"strconv"
+	"syscall"
+	"time"
+
+	"github.com/gin-gonic/gin"
+	"github.com/nuanxinqing123/flying-bird/internal/app/config"
+	"github.com/nuanxinqing123/flying-bird/internal/app/initializer"
+	_const "github.com/nuanxinqing123/flying-bird/internal/const"
+	"go.uber.org/zap"
+)
+
+// Start 启动服务
+func Start() {
+	config.VP = initializer.Viper()
+
+	config.Log = initializer.Zap()
+
+	router := initializer.Routers()
+
+	fmt.Println(" ")
+	if config.Config.App.Mode == _const.DeBug {
+		fmt.Println("运行模式: Debug模式")
+		gin.SetMode(gin.DebugMode)
+	} else {
+		fmt.Println("运行模式: Release模式")
+		gin.SetMode(gin.ReleaseMode)
+	}
+	fmt.Println("监听端口: " + strconv.Itoa(config.Config.App.Port))
+	fmt.Println(" ")
+
+	// 启动服务
+	srv := &http.Server{
+		Addr:    fmt.Sprintf(":%d", config.Config.App.Port),
+		Handler: router,
+	}
+
+	// 启动
+	go func() {
+		if err := srv.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
+			log.Fatalf("Listten: %s\n", err)
+		}
+	}()
+
+	// 等待终端信号来优雅关闭服务器，为关闭服务器设置10秒超时
+	quit := make(chan os.Signal, 1) // 创建一个接受信号的通道
+
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGTERM) // 此处不会阻塞
+	<-quit                                               // 阻塞此处，当接受到上述两种信号时，才继续往下执行
+	config.Log.Info("Service ready to shut down")
+
+	// 创建10秒超时的Context
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+	// 10秒内优雅关闭服务（将未处理完成的请求处理完再关闭服务），超过10秒就超时退出
+	if err := srv.Shutdown(ctx); err != nil {
+		config.Log.Fatal("Service timed out has been shut down: ", zap.Error(err))
+	}
+
+	config.Log.Info("Service has been shut down")
+}
