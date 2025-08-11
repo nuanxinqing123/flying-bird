@@ -21,9 +21,33 @@ import (
 
 // Start 启动服务
 func Start() {
+	// 初始化配置文件
 	config.VP = initializer.Viper()
+	if config.VP != nil {
+		fmt.Println("Viper初始化成功")
+	}
 
+	// 初始化日志
 	config.Log = initializer.Zap()
+
+	// 初始化数据库
+	config.DB = initializer.Gorm()
+	if config.DB == nil {
+		config.Log.Fatal("数据库连接失败")
+		return
+	} else {
+		// 初始化表
+		initializer.RegisterTables(config.DB)
+		config.Log.Info("数据库连接成功")
+	}
+	// 初始化缓存
+	config.Cache = initializer.Cache()
+	if config.Cache == nil {
+		config.Log.Fatal("Redis连接失败")
+		return
+	} else {
+		config.Log.Info("Redis连接成功")
+	}
 
 	router := initializer.Routers()
 

@@ -29,6 +29,5 @@ func Viper() *viper.Viper {
 		fmt.Println(err)
 	}
 
-	fmt.Println("Viper初始化成功")
 	return v
 }
