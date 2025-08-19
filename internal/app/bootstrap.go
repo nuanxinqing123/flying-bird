@@ -48,6 +48,7 @@ func Start() {
 		initializer.RegisterTables(config.DB)
 		config.Log.Info("数据库连接成功")
 	}
+
 	// 初始化缓存
 	config.Cache = initializer.Cache()
 	if config.Cache == nil {
