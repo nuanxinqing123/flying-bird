@@ -34,8 +34,13 @@ func Routers() *gin.Engine {
 
 	// 健康检查
 	HealthyGroup := Router.Group("/")
-	HealthyCon := controller.HealthyController{}
+	HealthyCon := controller.NewHealthyController()
 	HealthyCon.HealthyRouter(HealthyGroup)
+
+	// 用户管理户管理
+	UserGroup := Router.Group("/user")
+	UserCon := controller.NewUserController()
+	UserCon.UserRouter(UserGroup)
 
 	return Router
 }

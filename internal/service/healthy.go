@@ -9,6 +9,13 @@ import (
 	res "github.com/nuanxinqing123/flying-bird/pkg/response"
 )
 
+type HealthyService struct{}
+
+// NewHealthyService 创建 HealthyService
+func NewHealthyService() *HealthyService {
+	return &HealthyService{}
+}
+
 // HealthCheckResponse 健康检查响应
 type HealthCheckResponse struct {
 	Status    bool      `json:"status"`
@@ -18,17 +25,17 @@ type HealthCheckResponse struct {
 	Redis     bool      `json:"redis"`
 }
 
-func CheckHealth(ctx *gin.Context) (res.ResCode, any) {
+func (s *HealthyService) CheckHealth(ctx *gin.Context) (res.ResCode, any) {
 	hc := &HealthCheckResponse{
 		Timestamp: time.Now(),
 		API:       true, // API 本身能响应说明是健康的
 	}
 
 	// 检查数据库
-	hc.Database = checkDatabase()
+	hc.Database = s.checkDatabase()
 
 	// 检查Redis
-	hc.Redis = checkRedis(ctx)
+	hc.Redis = s.checkRedis(ctx)
 
 	// 确定整体状态
 	if hc.Database == true && hc.Redis == true {
@@ -41,7 +48,7 @@ func CheckHealth(ctx *gin.Context) (res.ResCode, any) {
 }
 
 // checkDatabase 检查数据库连接
-func checkDatabase() bool {
+func (s *HealthyService) checkDatabase() bool {
 	if config.DB == nil {
 		return false
 	}
@@ -56,7 +63,7 @@ func checkDatabase() bool {
 }
 
 // checkRedis 检查Redis连接
-func checkRedis(ctx *gin.Context) bool {
+func (s *HealthyService) checkRedis(ctx *gin.Context) bool {
 	if config.Cache == nil {
 		return false
 	}
