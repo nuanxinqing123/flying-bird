@@ -11,7 +11,7 @@ import (
 
 // Recovery recover掉项目可能出现的panic，并使用zap记录相关日志
 func Recovery() gin.HandlerFunc {
-	return gin.CustomRecovery(func(c *gin.Context, recovered interface{}) {
+	return gin.CustomRecovery(func(c *gin.Context, recovered any) {
 		var errs validator.ValidationErrors
 		if errors.As(recovered.(validator.ValidationErrors), &errs) {
 			c.String(http.StatusBadRequest, "参数校验失败")

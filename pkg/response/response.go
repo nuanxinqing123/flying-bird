@@ -15,9 +15,9 @@ import (
 */
 
 type Data struct {
-	Code ResCode     `json:"code"`
-	Msg  interface{} `json:"msg"`
-	Data interface{} `json:"data"`
+	Code ResCode `json:"code"`
+	Msg  any     `json:"msg"`
+	Data any     `json:"data"`
 }
 
 // ResError 返回错误信息
@@ -31,7 +31,7 @@ func ResError(c *gin.Context, code ResCode) {
 }
 
 // ResErrorWithMsg 自定义错误返回
-func ResErrorWithMsg(c *gin.Context, code ResCode, msg interface{}, data ...interface{}) {
+func ResErrorWithMsg(c *gin.Context, code ResCode, msg any, data ...any) {
 	c.JSON(http.StatusOK,
 		&Data{
 			Code: code,
@@ -41,7 +41,7 @@ func ResErrorWithMsg(c *gin.Context, code ResCode, msg interface{}, data ...inte
 }
 
 // ResSuccess 返回成功信息
-func ResSuccess(c *gin.Context, data interface{}) {
+func ResSuccess(c *gin.Context, data any) {
 	c.JSON(http.StatusOK,
 		&Data{
 			Code: CodeSuccess,

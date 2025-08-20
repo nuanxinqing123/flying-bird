@@ -27,7 +27,7 @@ func NewWriter(w logger.Writer) *Writer {
 
 // Printf 格式化打印日志
 // 根据配置决定使用zap日志还是标准输出
-func (w *Writer) Printf(message string, data ...interface{}) {
+func (w *Writer) Printf(message string, data ...any) {
 	var logZap bool
 	logZap = config.Config.DB.LogZap
 	if logZap {

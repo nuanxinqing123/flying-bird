@@ -17,6 +17,7 @@ import (
 	"github.com/nuanxinqing123/flying-bird/internal/app/config"
 	"github.com/nuanxinqing123/flying-bird/internal/app/initializer"
 	_const "github.com/nuanxinqing123/flying-bird/internal/const"
+	"github.com/nuanxinqing123/flying-bird/internal/repository"
 	"go.uber.org/zap"
 )
 
@@ -46,6 +47,8 @@ func Start() {
 	} else {
 		// 初始化表
 		initializer.RegisterTables(config.DB)
+		// 设置 Gorm Gen 使用的默认数据库
+		repository.SetDefault(config.DB)
 		config.Log.Info("数据库连接成功")
 	}
 

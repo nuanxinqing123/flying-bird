@@ -15,17 +15,17 @@ func NewUserService() *UserService {
 }
 
 // GetAllUsers 获取所有用户
-func (s *UserService) GetAllUsers() (interface{}, error) {
+func (s *UserService) GetAllUsers() (any, error) {
 	return repository.Users.Find()
 }
 
 // GetUserByID 根据 ID 获取用户
-func (s *UserService) GetUserByID(id int64) (interface{}, error) {
+func (s *UserService) GetUserByID(id int64) (any, error) {
 	return repository.Users.Where(repository.Users.ID.Eq(id)).First()
 }
 
 // CreateUser 创建用户
-func (s *UserService) CreateUser(name, email string, age int) (interface{}, error) {
+func (s *UserService) CreateUser(name, email string, age int) (any, error) {
 	ageInt := int32(age)
 	// 使用 Gorm Gen 创建用户
 	user := model.Users{
