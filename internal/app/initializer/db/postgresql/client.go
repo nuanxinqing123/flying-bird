@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/nuanxinqing123/flying-bird/internal/app/config"
-	_const "github.com/nuanxinqing123/flying-bird/internal/const"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -89,7 +89,7 @@ func GormPostgreSQL() *gorm.DB {
 		p.Host, p.UserName, p.Password, p.Name, p.Port, p.Config)
 
 	// 调试模式下打印DSN
-	if config.Config.App.Mode == _const.DeBug {
+	if config.Config.App.Mode == gin.DebugMode {
 		fmt.Println("PostgreSQL DSN:", dsn)
 	}
 

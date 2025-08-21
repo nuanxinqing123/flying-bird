@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/go-resty/resty/v2"
 	"github.com/nuanxinqing123/flying-bird/internal/app/config"
-	_const "github.com/nuanxinqing123/flying-bird/internal/const"
 )
 
 // Request HTTP请求客户端结构体
@@ -20,7 +20,7 @@ func New() *Request {
 
 	// 设置DeBug模式
 	// 当应用程序运行在debug模式时，开启HTTP请求的调试输出
-	if config.Config.App.Mode == _const.DeBug {
+	if config.Config.App.Mode == gin.DebugMode {
 		client.SetDebug(true)
 	}
 

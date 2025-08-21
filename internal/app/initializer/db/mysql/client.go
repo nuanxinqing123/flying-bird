@@ -6,8 +6,8 @@ import (
 	"os"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/nuanxinqing123/flying-bird/internal/app/config"
-	_const "github.com/nuanxinqing123/flying-bird/internal/const"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -88,7 +88,7 @@ func GormMysql() *gorm.DB {
 	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?%s", m.UserName, m.Password, m.Host, m.Port, m.Name, m.Config)
 
 	// 调试模式下打印DSN
-	if config.Config.App.Mode == _const.DeBug {
+	if config.Config.App.Mode == gin.DebugMode {
 		fmt.Println("MySQL DSN:", dsn)
 	}
 	// 配置MySQL连接参数

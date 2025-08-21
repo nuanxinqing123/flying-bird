@@ -16,7 +16,6 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/nuanxinqing123/flying-bird/internal/app/config"
 	"github.com/nuanxinqing123/flying-bird/internal/app/initializer"
-	_const "github.com/nuanxinqing123/flying-bird/internal/const"
 	"github.com/nuanxinqing123/flying-bird/internal/repository"
 	"go.uber.org/zap"
 )
@@ -64,9 +63,12 @@ func Start() {
 	router := initializer.Routers()
 
 	fmt.Println(" ")
-	if config.Config.App.Mode == _const.DeBug {
+	if config.Config.App.Mode == gin.DebugMode {
 		fmt.Println("运行模式: Debug模式")
 		gin.SetMode(gin.DebugMode)
+	} else if config.Config.App.Mode == gin.TestMode {
+		fmt.Println("运行模式: Test模式")
+		gin.SetMode(gin.TestMode)
 	} else {
 		fmt.Println("运行模式: Release模式")
 		gin.SetMode(gin.ReleaseMode)

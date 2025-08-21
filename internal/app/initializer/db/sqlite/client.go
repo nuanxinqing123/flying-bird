@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/gin-gonic/gin"
 	"github.com/nuanxinqing123/flying-bird/internal/app/config"
-	_const "github.com/nuanxinqing123/flying-bird/internal/const"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -104,7 +104,7 @@ func GormSQLite() *gorm.DB {
 	}
 
 	// 调试模式下打印数据库路径
-	if config.Config.App.Mode == _const.DeBug {
+	if config.Config.App.Mode == gin.DebugMode {
 		fmt.Println("SQLite数据库路径:", dbPath)
 	}
 
