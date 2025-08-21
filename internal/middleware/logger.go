@@ -26,28 +26,28 @@ func (w bodyLogWriter) WriteString(s string) (int, error) {
 }
 
 func Logger() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		bodyLogWriter := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: c.Writer}
-		c.Writer = bodyLogWriter
+	return func(ctx *gin.Context) {
+		bodyLogWriter := &bodyLogWriter{body: bytes.NewBufferString(""), ResponseWriter: ctx.Writer}
+		ctx.Writer = bodyLogWriter
 
 		// 开始时间
 		startTime := time.Now()
 
-		b, _ := c.Copy().GetRawData()
+		b, _ := ctx.Copy().GetRawData()
 
-		c.Request.Body = io.NopCloser(bytes.NewReader(b))
+		ctx.Request.Body = io.NopCloser(bytes.NewReader(b))
 
 		// 处理请求
-		c.Next()
+		ctx.Next()
 
 		// 结束时间
 		endTime := time.Now()
 
 		config.Log.Info("请求响应",
-			zap.Int("status", c.Writer.Status()),
-			zap.String("method", c.Request.Method),
-			zap.String("url", c.Request.URL.String()),
-			zap.String("client_ip", c.ClientIP()),
+			zap.Int("status", ctx.Writer.Status()),
+			zap.String("method", ctx.Request.Method),
+			zap.String("url", ctx.Request.URL.String()),
+			zap.String("client_ip", ctx.ClientIP()),
 			zap.String("request_time", TimeFormat(startTime)),
 			zap.String("response_time", TimeFormat(endTime)),
 			zap.String("cost_time", endTime.Sub(startTime).String()),
