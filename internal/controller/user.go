@@ -23,7 +23,14 @@ func NewUserController() *UserController {
 func (c *UserController) UserRouter(r *gin.RouterGroup) {
 	// 获取所有用户
 	r.GET("/users", c.GetUsers)
-
+	// 根据 ID 获取用户
+	r.GET("/users/:id", c.GetUserByID)
+	// 创建用户
+	r.POST("/users", c.CreateUser)
+	// 更新用户
+	r.PUT("/users/:id", c.UpdateUser)
+	// 删除用户
+	r.DELETE("/users/:id", c.DeleteUser)
 }
 
 // GetUsers 获取所有用户
