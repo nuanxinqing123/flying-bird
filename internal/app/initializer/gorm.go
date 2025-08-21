@@ -8,6 +8,7 @@ import (
 	"github.com/nuanxinqing123/flying-bird/internal/app/initializer/db/postgresql"
 	"github.com/nuanxinqing123/flying-bird/internal/app/initializer/db/sqlite"
 	_const "github.com/nuanxinqing123/flying-bird/internal/const"
+	"github.com/nuanxinqing123/flying-bird/internal/model"
 	"gorm.io/gorm"
 )
 
@@ -28,7 +29,9 @@ func Gorm() *gorm.DB {
 // RegisterTables 注册数据库表专用
 func RegisterTables(db *gorm.DB) {
 	// 数据表：自动迁移
-	err := db.Set("gorm:table_options", "CHARSET=utf8mb4").AutoMigrate()
+	err := db.Set("gorm:table_options", "CHARSET=utf8mb4").AutoMigrate(
+		&model.Users{},
+	)
 	if err != nil {
 		os.Exit(0)
 	}
